@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="44db0cd2-6abb-4392-b49c-42aee0f5500e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tasks/migrations/0001_initial.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tasks/migrations/0002_auto_20170301_1517.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/OpenML/settings.py" afterPath="$PROJECT_DIR$/OpenML/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tasks/admin.py" afterPath="$PROJECT_DIR$/tasks/admin.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tasks/models.py" afterPath="$PROJECT_DIR$/tasks/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tasks/templates/tasks.html" afterPath="$PROJECT_DIR$/tasks/templates/tasks.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tasks/urls.py" afterPath="$PROJECT_DIR$/tasks/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tasks/views.py" afterPath="$PROJECT_DIR$/tasks/views.py" />
-    </list>
+    <list default="true" id="44db0cd2-6abb-4392-b49c-42aee0f5500e" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
