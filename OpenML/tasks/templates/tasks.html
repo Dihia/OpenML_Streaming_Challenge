@@ -3,7 +3,9 @@
     <ul>
     {% for task in tasks %}
       <li>
-          <h2>{{ task.task_name }}</h2>
+          <h1>{{ task.task_type}}</h1>
+        <li> <h4>{{ task.task_id}}</h4></li>
+
       </li>
     {% endfor %}
     </ul>
