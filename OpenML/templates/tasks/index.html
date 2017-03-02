@@ -2,11 +2,7 @@
 
 {% block content %}
   <h1>Tasks</h1>
-    <ul>
     {% for task in tasks %}
-      <li>
-          <h2>{{ task }}</h2>
-      </li>
+          {% include "tasks/panel.html"  with task=task%}
     {% endfor %}
-    </ul>
 {% endblock %}
