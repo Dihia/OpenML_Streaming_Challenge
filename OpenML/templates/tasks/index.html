@@ -1,4 +1,6 @@
-<html>
+{% extends "base.html" %}
+
+{% block content %}
   <h1>Tasks</h1>
     <ul>
     {% for task in tasks %}
@@ -7,4 +9,4 @@
       </li>
     {% endfor %}
     </ul>
-</html>
+{% endblock %}
