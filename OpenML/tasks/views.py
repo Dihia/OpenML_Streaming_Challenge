@@ -4,9 +4,10 @@ from django.shortcuts import render
 
 from openml import tasks
 
-task = tasks.get_task(1)
+task_list = [tasks.get_task(9)]
 
-task_list = [task]
 
-def index(request):
+
+def get(request):
     return render(request, 'tasks.html', {'tasks': task_list})
+
