@@ -1,11 +1,11 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from .models import Contact
-
+import json
+from os import walk
 
 variables = {
-    "title" : "Streaming Challenges - Tasks",
-    "pageName" : "Tasks"
+    "title" : "Streaming Challenges - Datasets",
+    "pageName" : "Datasets"
 }
 
 task_example1 = {
@@ -22,7 +22,7 @@ task_example1 = {
 
 task_example = {
     "name": "Supervised Data Stream Classification on molecular-biology_promoters",
-    "id": 23,
+    "task_id": 23,
     "nb_runs": 0,
     "nb_likes": 1,
     "nb_downloads": 2,
@@ -32,6 +32,11 @@ task_example = {
     "dataset_name": " molecular-biology_promoters"
 }
 
+with open('/home/colette/creations/openml/OpenML_Streaming_Challenge/OpenML/OpenML/datasets/dataset.json') as data_file:
+    dataset = json.load(data_file)
+
+
+
 tasks = {
     123: task_example1,
     23 : task_example
@@ -40,12 +45,15 @@ tasks = {
 
 def index(request):
 
-    task_list = [task_example,task_example1]
-    variables['tasks'] = task_list
+    dataset_list = [dataset]
+    variables['datasets'] = dataset_list
 
-    return render(request, 'tasks/index.html', variables)
+    return render(request, 'datasets/index.html', variables)
 
 def show(request,id):
-    variables['task'] = tasks[int(id)]
+    #get the dataset of the id
+    variables['dataset'] = dataset
+    #list all tasks of this datasets
+    variables['tasks'] = [task_example,task_example1]
 
-    return render(request,'tasks/show.html',variables)
+    return render(request,'datasets/show.html',variables)

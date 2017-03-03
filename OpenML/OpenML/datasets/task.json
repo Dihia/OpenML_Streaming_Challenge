@@ -1,0 +1,85 @@
+{"task": {
+    "task_id": "1721",
+    "task_name": "Task 1721: mfeat-zernike (Learning Curve)",
+    "task_type_id": "3",
+    "task_type": "Learning Curve",
+    "input": [
+      {
+        "name": "source_data",
+        "data_set": {
+          "data_set_id": "22",
+          "target_feature": "class"
+        }
+      },
+      {
+        "name": "estimation_procedure",
+        "estimation_procedure": {
+          "type": "learningcurve",
+          "data_splits_url": "https:\/\/www.openml.org\/\/api_splits\/get\/1721\/Task_1721_splits.arff",
+          "parameter": [
+            {
+              "name": "number_repeats",
+              "value": "1"
+            },
+            {
+              "name": "number_folds",
+              "value": "10"
+            },
+            {
+              "name": "number_samples",
+              "value": "11"
+            }
+          ]
+        }
+      },
+      {
+        "name": "evaluation_measures",
+        "evaluation_measures": {
+          "evaluation_measure": "predictive_accuracy"
+        }
+      }
+    ],
+    "output": {
+      "name": "predictions",
+      "predictions": {
+        "format": "ARFF",
+        "feature": [
+          {
+            "name": "repeat",
+            "type": "integer"
+          },
+          {
+            "name": "fold",
+            "type": "integer"
+          },
+          {
+            "name": "sample",
+            "type": "integer"
+          },
+          {
+            "name": "row_id",
+            "type": "integer"
+          },
+          {
+            "name": "confidence.classname",
+            "type": "numeric"
+          },
+          {
+            "name": "prediction",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "tag": [
+      "ActiveTestingSamples",
+      "curves127",
+      "curves3",
+      "curves4",
+      "LearningCurves",
+      "study_2",
+      "study_34",
+      "study_37"
+    ]
+  }
+}
