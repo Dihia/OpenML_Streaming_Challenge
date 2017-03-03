@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="col-xs-12 col-md-10 col-md-offset-1" id="mainpanel">
+
+        <div class="tab-content">
+
+            <div class="tab-pane active" id="data_overview">
+
+                <ul class="hotlinks">
+                    <li>
+                        <a id="likebutton" class="loginfirst btn btn-link" onclick="doLike(false)" title="Click to like"> <i id="likeicon" class="fa fa-heart-o fa-2x"></i></a>
+                    </li>
+                    <li>
+                        <span class="loginfirst btn btn-link" onclick="doDownload()" href="https://www.openml.org/data/download/4617452/phphHV8xl"><i class="fa fa-cloud-download fa-2x"></i></span>
+                    </li>
+                    <li>
+                        <span class="loginfirst btn btn-link" onclick="doDownload()" href="/d/40536/json"><i class="fa fa-code fa-2x"></i></span>
+                    </li>
+                    <li>
+                        <div class="version" style="margin-bottom: -17px;">
+                            V. {{ dataset.version }}
+                            <!-- there is not information about the other version of the dataset in the JSON provides by the API
+                            <select class="selectpicker" data-width="auto" onchange="location = this.options[this.selectedIndex].value;" style="display: none;">
+                                <option value="d/40536" selected="">v. 1</option>
+                            </select>
+                            <div class="btn-group bootstrap-select" style="width: 61px;">
+                                <button type="button" class="btn dropdown-toggle selectpicker btn-default" data-toggle="dropdown" title="v. 1"><span class="filter-option pull-left">v. 1</span>&nbsp;<span class="caret"></span></button><div class="dropdown-menu open" style="min-width: 0px;"><ul class="dropdown-menu inner selectpicker" role="menu"><li rel="0" class="selected"><a tabindex="0" class="" style=""><span class="text">v. 1</span><i class="fa fa-check icon-ok check-mark"></i></a></li></ul></div></div>
+                                -->
+                        </div>
+                    </li>
+                </ul>
+
+                <h1 class="pull-left"><a href="d"><i class="fa fa-database"></i></a>{{ dataset.name }}</h1>
+
+                <div class="datainfo">
+                    <span class="label label-success">{{ dataset.status }}</span>
+                    <i class="fa fa-table"></i> {{ dataset.format }}
+                    <!-- needs more informations to get the url
+                     <a href="http://weka.wikispaces.com/ARFF+%28developer+version%29" target="_blank">ARFF</a> -->
+                    <i class="fa fa-cc"></i> {{ dataset.licence }}
+                    <!-- same problem
+                    <a href="https://creativecommons.org/choose/mark/">Publicly available</a>-->
+                    <i class="fa fa-eye-slash"></i> Visibility: {{ dataset.visibility }}
+                    <i class="fa fa-cloud-upload"></i> Uploaded {{ dataset.date }} by <a href="u/{{ dataset.uploader_id }}">{{ dataset.uploader }}</a>
+                    <br>
+                    <i class="fa fa-heart"></i> <span id="likecount">{{ dataset.nr_of_likes }} likes</span>
+                    <i class="fa fa-cloud-download"></i><span id="downloadcount">downloaded by {{ dataset.nr_of_downloads }} people  , {{ dataset.total_downloads }} total downloads</span>
+                    <i class="fa fa-warning task" data-toggle="collapse" data-target="#issues" title="Click to show/hide" style="cursor: pointer; cursor: hand;"></i><span id="nr_of_issues" data-toggle="collapse" data-target="#issues" title="Click to show/hide" style="cursor: pointer; cursor: hand;">{{ dataset.nr_of_issues }} issues</span>
+                    <i class="fa fa-thumbs-down"></i><span id="downvotes">{{ dataset.nr_of_downvotes }} downvotes</span>
+                    <span title="Reach is: 2x likes received + downloads received on this data set."><i class="fa fa-rss reach"></i><span id="reach">{{ dataset.reach }} reach</span></span>
+                    <span id="impact" title="Impact is: number or reuses of this dataset in tasks + 0.5*reach of these tasks + 0.5*impact of these tasks"><i class="fa fa-bolt impact"></i>{{ dataset.impact }} impact</span>
+                </div>
+
+                <!--
+                <div class="col-xs-12 panel collapse" id="issues">
+                    <table class="table table-striped" id="issues_content">
+                        <tbody><tr>
+                <th><Issue></Issue></th>
+                <th><div id="Downvo"></div>tes for this reason</th>
+                            <th>By</th>
+                            <th></th>
+                        </tr>
+                        </tbody></table>
+                    <br>
+                    <br>
+                    <form role="form" id="issueform">
+                        <h5>Submit a new issue for this dataset</h5>
+                        <div class="form-group">
+                            <label for="Reason">Issue:</label>
+                            <input class="form-control" id="reason" type="text">
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                        <div id="succes" class="text-center hidden">Issue Submitted!</div>
+                        <div id="fail" class="text-center hidden">Can't submit issue </div>
+                    </form>
+                </div>
+                -->
+
+                <!-- here code to load the wiki of the dataset, maybe useless
+                <div class="col-xs-12 panel" onclick="showmore()">
+                    <div class="cardactions">
+                        <div class="wiki-buttons">
+                            <div class="pull-right" id="wiki-waiting">
+                                <i class="fa fa-spinner fa-pulse"></i> Loading wiki
+                            </div>
+                            <div class="pull-right" id="wiki-ready">
+                                <span style="font-size:10px;font-style:italic;color:#666">Help us complete this description <i class="fa fa-long-arrow-right"></i></span>
+                                <a class="pull-right greenheader loginfirst" href="d/40536/edit"><i class="fa fa-edit fa-lg"></i> Edit</a>
+                            </div>
+                        </div>
+                    </div>
+                    -->
+                <div class="card-content" >
+                    <div class="description">
+                        <div class="rawtext">
+                            {{ dataset.description }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- no mean to handle features
+  <h3>123 features</h3>
+      <div class="cardtable">
+			<div class="features hideFeatures">
+			<div class="table-responsive">
+				<table class="table">
+				<tbody><tr class="cardrow"><td>match <b>(target)</b></td><td>nominal</td><td>2 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat122" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>has_null</td><td>nominal</td><td>2 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat0" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>wave</td><td>numeric</td><td>21 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat1" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;" data-highcharts-chart="0"><div id="highcharts-bkiwk5u-0" style="position: relative; overflow: hidden; width: 300px; height: 90px; text-align: left; line-height: normal; z-index: 0; left: 0px; top: 0.466675px;" class="highcharts-container "><svg version="1.1" class="highcharts-root" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Arial, Helvetica, sans-serif;font-size:12px;" xmlns="http://www.w3.org/2000/svg" width="300" height="90"><desc>Created with Highcharts 5.0.7</desc><defs></defs></svg></div></div></td></tr><tr class="cardrow"><td>gender</td><td>nominal</td><td>2 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat2" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>age</td><td>numeric</td><td>24 unique values<br> 95 missing</td><td class="feat-distribution"><div id="feat3" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>age_o</td><td>numeric</td><td>24 unique values<br> 104 missing</td><td class="feat-distribution"><div id="feat4" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_age</td><td>numeric</td><td>35 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat5" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_d_age</td><td>nominal</td><td>4 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat6" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>race</td><td>nominal</td><td>5 unique values<br> 63 missing</td><td class="feat-distribution"><div id="feat7" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>race_o</td><td>nominal</td><td>5 unique values<br> 73 missing</td><td class="feat-distribution"><div id="feat8" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>samerace</td><td>nominal</td><td>2 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat9" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>importance_same_race</td><td>numeric</td><td>11 unique values<br> 79 missing</td><td class="feat-distribution"><div id="feat10" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>importance_same_religion</td><td>numeric</td><td>10 unique values<br> 79 missing</td><td class="feat-distribution"><div id="feat11" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_importance_same_race</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat12" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_importance_same_religion</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat13" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>field</td><td>nominal</td><td>259 unique values<br> 63 missing</td><td class="feat-distribution"><div id="feat14" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>pref_o_attractive</td><td>numeric</td><td>94 unique values<br> 89 missing</td><td class="feat-distribution"><div id="feat15" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>pref_o_sincere</td><td>numeric</td><td>78 unique values<br> 89 missing</td><td class="feat-distribution"><div id="feat16" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>pref_o_intelligence</td><td>numeric</td><td>65 unique values<br> 89 missing</td><td class="feat-distribution"><div id="feat17" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>pref_o_funny</td><td>numeric</td><td>71 unique values<br> 98 missing</td><td class="feat-distribution"><div id="feat18" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>pref_o_ambitious</td><td>numeric</td><td>82 unique values<br> 107 missing</td><td class="feat-distribution"><div id="feat19" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>pref_o_shared_interests</td><td>numeric</td><td>85 unique values<br> 129 missing</td><td class="feat-distribution"><div id="feat20" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_pref_o_attractive</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat21" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_pref_o_sincere</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat22" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_pref_o_intelligence</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat23" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_pref_o_funny</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat24" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_pref_o_ambitious</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat25" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_pref_o_shared_interests</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat26" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>attractive_o</td><td>numeric</td><td>18 unique values<br> 212 missing</td><td class="feat-distribution"><div id="feat27" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>sinsere_o</td><td>numeric</td><td>14 unique values<br> 287 missing</td><td class="feat-distribution"><div id="feat28" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>intelligence_o</td><td>numeric</td><td>17 unique values<br> 306 missing</td><td class="feat-distribution"><div id="feat29" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>funny_o</td><td>numeric</td><td>17 unique values<br> 360 missing</td><td class="feat-distribution"><div id="feat30" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>ambitous_o</td><td>numeric</td><td>15 unique values<br> 722 missing</td><td class="feat-distribution"><div id="feat31" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>shared_interests_o</td><td>numeric</td><td>15 unique values<br> 1076 missing</td><td class="feat-distribution"><div id="feat32" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_attractive_o</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat33" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_sinsere_o</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat34" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_intelligence_o</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat35" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_funny_o</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat36" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_ambitous_o</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat37" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_shared_interests_o</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat38" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>attractive_important</td><td>numeric</td><td>94 unique values<br> 79 missing</td><td class="feat-distribution"><div id="feat39" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>sincere_important</td><td>numeric</td><td>78 unique values<br> 79 missing</td><td class="feat-distribution"><div id="feat40" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>intellicence_important</td><td>numeric</td><td>65 unique values<br> 79 missing</td><td class="feat-distribution"><div id="feat41" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>funny_important</td><td>numeric</td><td>71 unique values<br> 89 missing</td><td class="feat-distribution"><div id="feat42" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>ambtition_important</td><td>numeric</td><td>82 unique values<br> 99 missing</td><td class="feat-distribution"><div id="feat43" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>shared_interests_important</td><td>numeric</td><td>85 unique values<br> 121 missing</td><td class="feat-distribution"><div id="feat44" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_attractive_important</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat45" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_sincere_important</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat46" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_intellicence_important</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat47" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_funny_important</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat48" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_ambtition_important</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat49" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_shared_interests_important</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat50" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>attractive</td><td>numeric</td><td>9 unique values<br> 105 missing</td><td class="feat-distribution"><div id="feat51" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>sincere</td><td>numeric</td><td>9 unique values<br> 105 missing</td><td class="feat-distribution"><div id="feat52" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>intelligence</td><td>numeric</td><td>9 unique values<br> 105 missing</td><td class="feat-distribution"><div id="feat53" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>funny</td><td>numeric</td><td>8 unique values<br> 105 missing</td><td class="feat-distribution"><div id="feat54" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>ambition</td><td>numeric</td><td>9 unique values<br> 105 missing</td><td class="feat-distribution"><div id="feat55" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_attractive</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat56" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_sincere</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat57" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_intelligence</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat58" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_funny</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat59" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_ambition</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat60" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>attractive_partner</td><td>numeric</td><td>17 unique values<br> 202 missing</td><td class="feat-distribution"><div id="feat61" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>sincere_partner</td><td>numeric</td><td>14 unique values<br> 277 missing</td><td class="feat-distribution"><div id="feat62" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>intelligence_partner</td><td>numeric</td><td>17 unique values<br> 296 missing</td><td class="feat-distribution"><div id="feat63" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>funny_partner</td><td>numeric</td><td>16 unique values<br> 350 missing</td><td class="feat-distribution"><div id="feat64" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>ambition_partner</td><td>numeric</td><td>15 unique values<br> 712 missing</td><td class="feat-distribution"><div id="feat65" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>shared_interests_partner</td><td>numeric</td><td>15 unique values<br> 1067 missing</td><td class="feat-distribution"><div id="feat66" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_attractive_partner</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat67" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_sincere_partner</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat68" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_intelligence_partner</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat69" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_funny_partner</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat70" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_ambition_partner</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat71" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_shared_interests_partner</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat72" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>sports</td><td>numeric</td><td>10 unique values<br> 79 missing</td><td class="feat-distribution"><div id="feat73" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>tvsports</td><td>numeric</td><td>10 unique values<br> 79 missing</td><td class="feat-distribution"><div id="feat74" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>exercise</td><td>numeric</td><td>10 unique values<br> 79 missing</td><td class="feat-distribution"><div id="feat75" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>dining</td><td>numeric</td><td>10 unique values<br> 79 missing</td><td class="feat-distribution"><div id="feat76" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>museums</td><td>numeric</td><td>11 unique values<br> 79 missing</td><td class="feat-distribution"><div id="feat77" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>art</td><td>numeric</td><td>11 unique values<br> 79 missing</td><td class="feat-distribution"><div id="feat78" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>hiking</td><td>numeric</td><td>11 unique values<br> 79 missing</td><td class="feat-distribution"><div id="feat79" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>gaming</td><td>numeric</td><td>12 unique values<br> 79 missing</td><td class="feat-distribution"><div id="feat80" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>clubbing</td><td>numeric</td><td>11 unique values<br> 79 missing</td><td class="feat-distribution"><div id="feat81" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>reading</td><td>numeric</td><td>11 unique values<br> 79 missing</td><td class="feat-distribution"><div id="feat82" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>tv</td><td>numeric</td><td>10 unique values<br> 79 missing</td><td class="feat-distribution"><div id="feat83" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>theater</td><td>numeric</td><td>11 unique values<br> 79 missing</td><td class="feat-distribution"><div id="feat84" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>movies</td><td>numeric</td><td>10 unique values<br> 79 missing</td><td class="feat-distribution"><div id="feat85" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>concerts</td><td>numeric</td><td>11 unique values<br> 79 missing</td><td class="feat-distribution"><div id="feat86" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>music</td><td>numeric</td><td>10 unique values<br> 79 missing</td><td class="feat-distribution"><div id="feat87" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>shopping</td><td>numeric</td><td>10 unique values<br> 79 missing</td><td class="feat-distribution"><div id="feat88" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>yoga</td><td>numeric</td><td>11 unique values<br> 79 missing</td><td class="feat-distribution"><div id="feat89" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_sports</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat90" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_tvsports</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat91" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_exercise</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat92" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_dining</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat93" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_museums</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat94" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_art</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat95" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_hiking</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat96" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_gaming</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat97" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_clubbing</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat98" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_reading</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat99" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_tv</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat100" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_theater</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat101" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_movies</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat102" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_concerts</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat103" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_music</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat104" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_shopping</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat105" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_yoga</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat106" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>interests_correlate</td><td>numeric</td><td>155 unique values<br> 158 missing</td><td class="feat-distribution"><div id="feat107" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_interests_correlate</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat108" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>expected_happy_with_sd_people</td><td>numeric</td><td>10 unique values<br> 101 missing</td><td class="feat-distribution"><div id="feat109" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>expected_num_interested_in_me</td><td>numeric</td><td>18 unique values<br> 6578 missing</td><td class="feat-distribution"><div id="feat110" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>expected_num_matches</td><td>numeric</td><td>17 unique values<br> 1173 missing</td><td class="feat-distribution"><div id="feat111" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_expected_happy_with_sd_people</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat112" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_expected_num_interested_in_me</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat113" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_expected_num_matches</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat114" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>like</td><td>numeric</td><td>18 unique values<br> 240 missing</td><td class="feat-distribution"><div id="feat115" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>guess_prob_liked</td><td>numeric</td><td>19 unique values<br> 309 missing</td><td class="feat-distribution"><div id="feat116" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_like</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat117" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>d_guess_prob_liked</td><td>nominal</td><td>3 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat118" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>met</td><td>numeric</td><td>7 unique values<br> 375 missing</td><td class="feat-distribution"><div id="feat119" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>decision <b>(ignore)</b></td><td>nominal</td><td>2 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat120" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr><tr class="cardrow"><td>decision_o <b>(ignore)</b></td><td>nominal</td><td>2 unique values<br> 0 missing</td><td class="feat-distribution"><div id="feat121" style="height: 90px; margin: auto; min-width: 300px; max-width: 50%;"></div></td></tr>				</tbody></table>
+			</div>
+			</div>
+    </div>
+
+	<div class="show-more-features">
+			<a class="cardaction" onclick="showmorefeats()"><i class="fa fa-chevron-down"></i> Show first 100 features</a>
+		</div>
+        <div class="show-all-features">
+		</div>
+
+	 features unavailable -->
+
+            <!-- no mean to handle properties
+            <h3>19 properties</h3>
+            <div class="properties hideProperties">
+                <div class="searchresult panel">
+                    <div class="itemhead">
+                        <a href="a/data-qualities/DefaultAccuracy" class="iconpurple">
+                            <i class="fa fa-fw fa-bar-chart"></i> DefaultAccuracy</a>
+                    </div>
+                    <div class="dataproperty">0.84      </div>
+                    <div class="datadescription">The predictive accuracy obtained by simply predicting the majority class.</div>
+                </div>
+                <div class="searchresult panel">
+                    <div class="itemhead">
+                        <a href="a/data-qualities/Dimensionality" class="iconpurple">
+                            <i class="fa fa-fw fa-bar-chart"></i> Dimensionality</a>
+                    </div>
+                    <div class="dataproperty">0.01      </div>
+                    <div class="datadescription">DataQuality extracted from Fantail Library</div>
+                </div>
+                <div class="searchresult panel">
+                    <div class="itemhead">
+                        <a href="a/data-qualities/MajorityClassPercentage" class="iconpurple">
+                            <i class="fa fa-fw fa-bar-chart"></i> MajorityClassPercentage</a>
+                    </div>
+                    <div class="dataproperty">83.53      </div>
+                    <div class="datadescription">DataQuality extracted from Fantail Library</div>
+                </div>
+                <div class="searchresult panel">
+                    <div class="itemhead">
+                        <a href="a/data-qualities/MajorityClassSize" class="iconpurple">
+                            <i class="fa fa-fw fa-bar-chart"></i> MajorityClassSize</a>
+                    </div>
+                    <div class="dataproperty">6998      </div>
+                    <div class="datadescription">The number of instances that have the majority (most occurring) class</div>
+                </div>
+                <div class="searchresult panel">
+                    <div class="itemhead">
+                        <a href="a/data-qualities/MinorityClassPerentage" class="iconpurple">
+                            <i class="fa fa-fw fa-bar-chart"></i> MinorityClassPerentage</a>
+                    </div>
+                    <div class="dataproperty">16.47      </div>
+                    <div class="datadescription">DataQuality extracted from Fantail Library</div>
+                </div>
+                <div class="searchresult panel">
+                    <div class="itemhead">
+                        <a href="a/data-qualities/MinorityClassSize" class="iconpurple">
+                            <i class="fa fa-fw fa-bar-chart"></i> MinorityClassSize</a>
+                    </div>
+                    <div class="dataproperty">1380      </div>
+                    <div class="datadescription">The number of instances that have the minority (least occurring) class</div>
+                </div>
+                <div class="searchresult panel">
+                    <div class="itemhead">
+                        <a href="a/data-qualities/NumberOfBinaryFeatures" class="iconpurple">
+                            <i class="fa fa-fw fa-bar-chart"></i> NumberOfBinaryFeatures</a>
+                    </div>
+                    <div class="dataproperty">6      </div>
+                    <div class="datadescription">DataQuality extracted from Fantail Library</div>
+                </div>
+                <div class="searchresult panel">
+                    <div class="itemhead">
+                        <a href="a/data-qualities/NumberOfClasses" class="iconpurple">
+                            <i class="fa fa-fw fa-bar-chart"></i> NumberOfClasses</a>
+                    </div>
+                    <div class="dataproperty">2      </div>
+                    <div class="datadescription">The number of classes in the class attribute.</div>
+                </div>
+                <div class="searchresult panel">
+                    <div class="itemhead">
+                        <a href="a/data-qualities/NumberOfFeatures" class="iconpurple">
+                            <i class="fa fa-fw fa-bar-chart"></i> NumberOfFeatures</a>
+                    </div>
+                    <div class="dataproperty">123      </div>
+                    <div class="datadescription">The number of features (attributes) in the dataset. Also known as the dimensionality of the dataset.</div>
+                </div>
+                <div class="searchresult panel">
+                    <div class="itemhead">
+                        <a href="a/data-qualities/NumberOfInstances" class="iconpurple">
+                            <i class="fa fa-fw fa-bar-chart"></i> NumberOfInstances</a>
+                    </div>
+                    <div class="dataproperty">8378      </div>
+                    <div class="datadescription">The number of instances (examples) in the database.</div>
+                </div>
+                <div class="searchresult panel">
+                    <div class="itemhead">
+                        <a href="a/data-qualities/NumberOfInstancesWithMissingValues" class="iconpurple">
+                            <i class="fa fa-fw fa-bar-chart"></i> NumberOfInstancesWithMissingValues</a>
+                    </div>
+                    <div class="dataproperty">7330      </div>
+                    <div class="datadescription">Counts the number of instances that contain missing values.</div>
+                </div>
+                <div class="searchresult panel">
+                    <div class="itemhead">
+                        <a href="a/data-qualities/NumberOfMissingValues" class="iconpurple">
+                            <i class="fa fa-fw fa-bar-chart"></i> NumberOfMissingValues</a>
+                    </div>
+                    <div class="dataproperty">18372      </div>
+                    <div class="datadescription">Counts the total number of missing values in the dataset.</div>
+                </div>
+                <div class="searchresult panel">
+                    <div class="itemhead">
+                        <a href="a/data-qualities/NumberOfNumericFeatures" class="iconpurple">
+                            <i class="fa fa-fw fa-bar-chart"></i> NumberOfNumericFeatures</a>
+                    </div>
+                    <div class="dataproperty">59      </div>
+                    <div class="datadescription">The number of numeric features (attributes) in the dataset.</div>
+                </div>
+                <div class="searchresult panel">
+                    <div class="itemhead">
+                        <a href="a/data-qualities/NumberOfSymbolicFeatures" class="iconpurple">
+                            <i class="fa fa-fw fa-bar-chart"></i> NumberOfSymbolicFeatures</a>
+                    </div>
+                    <div class="dataproperty">64      </div>
+                    <div class="datadescription">The number of symbolic features (attributes) in the dataset.</div>
+                </div>
+                <div class="searchresult panel">
+                    <div class="itemhead">
+                        <a href="a/data-qualities/PercentageOfBinaryFeatures" class="iconpurple">
+                            <i class="fa fa-fw fa-bar-chart"></i> PercentageOfBinaryFeatures</a>
+                    </div>
+                    <div class="dataproperty">4.88      </div>
+                    <div class="datadescription">DataQuality extracted from Fantail Library</div>
+                </div>
+                <div class="searchresult panel">
+                    <div class="itemhead">
+                        <a href="a/data-qualities/PercentageOfInstancesWithMissingValues" class="iconpurple">
+                            <i class="fa fa-fw fa-bar-chart"></i> PercentageOfInstancesWithMissingValues</a>
+                    </div>
+                    <div class="dataproperty">87.49      </div>
+                    <div class="datadescription">DataQuality extracted from Fantail Library</div>
+                </div>
+                <div class="searchresult panel">
+                    <div class="itemhead">
+                        <a href="a/data-qualities/PercentageOfMissingValues" class="iconpurple">
+                            <i class="fa fa-fw fa-bar-chart"></i> PercentageOfMissingValues</a>
+                    </div>
+                    <div class="dataproperty">1.78      </div>
+                    <div class="datadescription">DataQuality extracted from Fantail Library</div>
+                </div>
+                <div class="searchresult panel">
+                    <div class="itemhead">
+                        <a href="a/data-qualities/PercentageOfNumericFeatures" class="iconpurple">
+                            <i class="fa fa-fw fa-bar-chart"></i> PercentageOfNumericFeatures</a>
+                    </div>
+                    <div class="dataproperty">47.97      </div>
+                    <div class="datadescription">DataQuality extracted from Fantail Library</div>
+                </div>
+                <div class="searchresult panel">
+                    <div class="itemhead">
+                        <a href="a/data-qualities/PercentageOfSymbolicFeatures" class="iconpurple">
+                            <i class="fa fa-fw fa-bar-chart"></i> PercentageOfSymbolicFeatures</a>
+                    </div>
+                    <div class="dataproperty">52.03      </div>
+                    <div class="datadescription">DataQuality extracted from Fantail Library</div>
+                </div>
+            </div>
+
+            <div class="show-more-props">
+                <a class="cardaction" onclick="showmoreprops()"><i class="fa fa-chevron-down"></i> Show all 19 properties</a>
+            </div>
+-->
+
+            <h3>5 tasks</h3>
+
+            <div class="searchresult panel">
+                {% for task in tasks %}
+                    <div class="itemheadfull">
+                        <i class="fa fa-trophy fa-lg" style="color:#fb8c00;"></i>
+                        <a href="t/{{ task.task_id }}">{{ task.name }}</a>
+                    </div>
+                    <div class="runStats statLine">
+                    <b>{{ task.nr_of_run }} runs</b> - estimation_procedure: {{ task.estimation_procedure }} - evaluation_measure: {{ task.evaluation_measures }} - target_feature: {{ task.target_feature }}
+                </div>
+                {% endfor %}
+            </div>
+            <a class="loginfirst btn btn-default btn-raised" href="new/task?data=SpeedDating(1)">Define a new task</a>
+
+            <h3>Discussions</h3>
+            <div class="panel disquspanel">
+                <div id="disqus_thread"><iframe id="dsq-app1" name="dsq-app1" allowtransparency="true" scrolling="no" tabindex="0" title="Disqus" style="width: 1px ! important; min-width: 100% ! important; border: medium none ! important; overflow: hidden ! important; height: 314px ! important;" src="https://disqus.com/embed/comments/?base=default&amp;version=1973d3a3c1957d897d05fa77fa3b9839&amp;f=openml&amp;t_u=https%3A%2F%2Fwww.openml.org%2Fd%2F40536&amp;t_e=SpeedDating&amp;t_d=OpenML&amp;t_t=SpeedDating&amp;t_c=3353609&amp;s_o=default" horizontalscrolling="no" verticalscrolling="no" width="100%" frameborder="0"></iframe></div>
+            </div>
+
+            <script type="text/javascript">
+                var disqus_shortname = 'openml'; // forum name
+                var disqus_category_id = '3353609'; // Data category
+                var disqus_title = 'SpeedDating'; // Data name
+                var disqus_url = 'https://www.openml.org/d/40536'; // Data url
+
+                /* * * DON'T EDIT BELOW THIS LINE * * */
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            </script>
+        </div>
+
+        <div class="tab-pane " id="data_update">
+        </div>
+
+    </div> <!-- end tabs content -->
+
+    </div>
+{% endblock %}

@@ -13,34 +13,37 @@
                         <a id="likebutton" class="loginfirst btn btn-link" onclick="doLike(false)" title="Click to like"> <i id="likeicon" class="fa fa-heart-o fa-2x"></i></a>                            <br>
                         <br>
                     </li>
-                    <li><a class="loginfirst btn btn-link" onclick="doDownload()" href="api/v1/json/task/7101"><i class="fa fa-file-code-o fa-2x"></i></a><br>JSON</li>
-                    <li><a class="loginfirst btn btn-link" onclick="doDownload()" href="api/v1/task/7101"><i class="fa fa-file-code-o fa-2x"></i></a><br>XML</li>
+                    <li><span class="loginfirst btn btn-link" onclick="doDownload()" href="api/v1/json/task/7101"><i class="fa fa-file-code-o fa-2x"></i></span><br>JSON</li>
+                    <li><span class="loginfirst btn btn-link" onclick="doDownload()" href="api/v1/task/7101"><i class="fa fa-file-code-o fa-2x"></i></span><br>XML</li>
                 </ul>
 
                 <h1><i class="fa fa-trophy"></i> Supervised Data Stream Classification on molecular-biology_promoters</h1>
                 <div class="datainfo">
-                    <i class="fa fa-trophy"></i> Task 7101                <i class="fa fa-flag"></i> <a href="tt/4">Supervised Data Stream Classification</a>
-                    <i class="fa fa-database"></i> <a href="d/956">molecular-biology_promoters</a>
+                    <i class="fa fa-trophy"></i> Task {{ task.id }}
+                    <i class="fa fa-flag"></i> Supervised Data Stream Classification
+                    <i class="fa fa-database"></i> <a href="d/{{ task.dataset_id }}">{{ task.dataset_name }}</a>
                     <i class="fa fa-star"></i> <a href="#taskruns" data-toggle="tab"> runs submitted</a>
                     <br>
-                    <i class="fa fa-heart"></i> <span id="likecount">0 likes</span>
-                    <i class="fa fa-cloud-download"></i><span id="downloadcount">downloaded by 0 people								, 0 total downloads</span>
+                    <i class="fa fa-heart"></i> <span id="likecount">{{ task.nb_likes }} likes</span>
+                    <i class="fa fa-cloud-download"></i><span id="downloadcount">{{ task.nb_downloads }} total downloads</span>
                     <i class="fa fa-warning task" data-toggle="collapse" data-target="#issues" title="Click to show/hide" style="cursor: pointer; cursor: hand;"></i><span id="nr_of_issues" data-toggle="collapse" data-target="#issues" title="Click to show/hide" style="cursor: pointer; cursor: hand;">0 issues</span>
                     <!--<i class="fa fa-thumbs-down"></i><span id="downvotes">0 downvotes</span>
 								-->
-                    <span title="Reach is: 2x likes received + downloads received on this task."><i class="fa fa-rss reach"></i><span id="reach">0 reach</span></span>
-                    <span id="impact" title="Impact is: number or reuses of this task in runs + 0.5*reach of these runs"><i class="fa fa-bolt impact"></i>0 impact</span>
+                    <span title="Reach is: 2x likes received + downloads received on this task."><i class="fa fa-rss reach"></i><span id="reach"> {{ task.nb_reachs }} reach</span></span>
+                    <span id="impact" title="Impact is: number or reuses of this task in runs + 0.5*reach of these runs"><i class="fa fa-bolt impact"></i>{{ task.nb_impacts }} impact</span>
                 </div>
 
+                <!-- no idea how we can submit a issue
                 <div class="col-xs-12 panel collapse" id="issues">
                     <table class="table table-striped" id="issues_content">
                         <tbody><tr>
                             <th>Issue</th>
-                            <th>#Downvotes for this <re></re>ason</th>
+                            <th>#Downvotes for this reason</th>
                             <th>By</th>
                             <th></th>
                         </tr>
-                        </tbody></table>
+                        </tbody>
+                    </table>
                     <br>
                     <br>
                     <form role="form" id="issueform">
@@ -53,7 +56,7 @@
                         <div id="succes" class="text-center hidden">Issue Submitted!</div>
                         <div id="fail" class="text-center hidden">Can't submit issue </div>
                     </form>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

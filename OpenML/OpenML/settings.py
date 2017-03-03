@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'OpenML.tasks'
+    'OpenML.tasks',
+    'OpenML.home',
+    'OpenML.datasets'
 ]
 
 MIDDLEWARE = [

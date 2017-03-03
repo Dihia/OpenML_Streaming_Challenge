@@ -1,0 +1,12 @@
+<div class="searchresult panel">
+    <div class="itemhead">
+        <i class="fa fa-database fa-lg" style="color:#3d8b3d"></i>
+        <a href="/d/{{ dataset.data_id }}">{{ dataset.name }}</a></div>
+    <!-- <div class="teaser"></div>-->
+    <div class="runStats statLine">
+        <b><i class="fa fa-star"></i>{{ dataset.runs }} runs<i class="fa fa-heart"></i>{{ dataset.nr_of_likes }} likes<i class="fa fa-cloud-download"></i>{{ dataset.total_downloads }}
+            downloads<i class="fa fa-rss"></i>{{ dataset.reach }} reach<i class="fa fa-bolt"></i>{{ dataset.impact }} impact </b><br>{{ dataset.qualities.NumberOfInstances }} instances - {{ dataset.qualities.NumberOfFeatures }}
+        features - {{ dataset.qualities.NumberOfClasses }} classes - {{ dataset.qualities.NumberOfMissingValues }} missing values
+    </div>
+
+</div>
