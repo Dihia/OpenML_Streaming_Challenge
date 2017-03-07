@@ -39,8 +39,9 @@
 </head>
 
 <body>
-
-<nav class="navbar navbar-inverse navbar-fixed-top">
+{% block Menu %}
+{% if request.user.is_authenticated %}
+        <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
@@ -58,10 +59,19 @@
                 <li><a href="/t/list">Tasks</a></li>
                 <li><a href="/d/list">Datasets</a></li>
                 <li><a href="/admin">Admin</a></li>
+                {% if user.is_authenticated %}
+                    <li style="float:right; color: white">Welcome {{ user.email}} !!!</li>
+                {% endif %}
             </ul>
         </div>
+
     </div>
+
 </nav>
+    {% endif %}
+{% endblock %}
+
+
 
 <div class="container">
 

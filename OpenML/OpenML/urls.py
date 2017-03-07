@@ -15,11 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import include,url
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     url(r'^t/', include('OpenML.tasks.urls')),
     url(r'^d/', include('OpenML.datasets.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'', include('OpenML.home.urls'))
+    url(r'^home', include('OpenML.home.urls')),
+    url(r'^accounts/', include('OpenML.accounts.urls', namespace='accounts')),
+
 ]
 

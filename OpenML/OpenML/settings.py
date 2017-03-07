@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'OpenML.tasks',
     'OpenML.home',
-    'OpenML.datasets'
+    'OpenML.datasets',
+    'OpenML.accounts'
 ]
 
 MIDDLEWARE = [
@@ -50,9 +51,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'middleware.LoginRequiredMiddleware.LoginRequiredMiddleware',
 ]
 
 ROOT_URLCONF = 'OpenML.urls'
+LOGIN_REDIRECT_URL = '/home'
 
 TEMPLATES = [
     {
@@ -88,18 +91,7 @@ DATABASES = {
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+   
 ]
 
 
@@ -125,3 +117,11 @@ STATIC_URL = '/assets/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "assets")
 ]
+
+LOGIN_URL = '/accounts/login/'
+
+AUTH_USER_MODEL = 'accounts.User'
+AUTHENTICATION_BACKENDS = ['OpenML.accounts.backends.EmailAuthBackend','django.contrib.auth.backends.ModelBackend', ]
+LOGIN_EXEMPT_URLS=[r'^accounts/register',r'^admin.*',r'^accounts/login']
+
+

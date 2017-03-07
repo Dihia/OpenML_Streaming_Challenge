@@ -32,7 +32,7 @@ task_example = {
     "dataset_name": " molecular-biology_promoters"
 }
 
-with open('/home/colette/creations/openml/OpenML_Streaming_Challenge/OpenML/OpenML/datasets/dataset.json') as data_file:
+with open('/home/dihia/OpenML_Streaming_Challenge/OpenML/OpenML/datasets/dataset.json') as data_file:
     dataset = json.load(data_file)
 
 
