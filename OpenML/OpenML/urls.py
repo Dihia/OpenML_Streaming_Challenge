@@ -24,5 +24,6 @@ urlpatterns = [
     url(r'^home', include('OpenML.home.urls')),
     url(r'^accounts/', include('OpenML.accounts.urls', namespace='accounts')),
 
+
 ]
 

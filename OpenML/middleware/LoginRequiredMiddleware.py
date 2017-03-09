@@ -2,11 +2,12 @@ from django.http import HttpResponseRedirect
 from django.conf import settings
 from re import compile
 from django.utils.deprecation import MiddlewareMixin
-
+from django.http import Http404
 
 EXEMPT_URLS = [compile(settings.LOGIN_URL.lstrip('/'))]
 if hasattr(settings, 'LOGIN_EXEMPT_URLS'):
     EXEMPT_URLS += [compile(expr) for expr in settings.LOGIN_EXEMPT_URLS]
+
 
 
 class LoginRequiredMiddleware(MiddlewareMixin):
@@ -29,3 +30,13 @@ class LoginRequiredMiddleware(MiddlewareMixin):
             path = request.path_info.lstrip('/')
             if not any(m.match(path) for m in EXEMPT_URLS):
                 return HttpResponseRedirect(settings.LOGIN_URL)
+
+
+class AdminOnlyMiddleware(MiddlewareMixin):
+    def process_request(self,request):
+        if request.path.startswith('admin'):
+            if request.useer.is_authenticated():
+                if not request.user.is_staff:
+                    raise Http404
+            else:
+                return redirect('/accounts/login')

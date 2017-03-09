@@ -7,17 +7,12 @@ class RegistrationForm(forms.ModelForm):
     """
     Form for registering a new account.
     """
-    email = forms.EmailField(label="Email")
-    firstname = forms.CharField()
-    lastname =  forms.CharField()
-    password1 = forms.PasswordInput()
-    password2 = forms.PasswordInput()
+    email = forms.EmailField(widget=forms.widgets.TextInput, label='Email')
+    firstname = forms.CharField(widget=forms.widgets.TextInput, label='First Name')
+    lastname = forms.CharField(widget=forms.widgets.TextInput, label='Last Name')
+    password1 = forms.CharField(widget=forms.widgets.PasswordInput,label="password1")
+    password2 = forms.CharField(widget=forms.widgets.PasswordInput,label="password2")
 
-    def __init__(self):
-        self.fields['firstanme'].label = "First Name"
-        self.fields['lastname'].label = "Last Name"
-        self.fields['password1'].label = "Password"
-        self.fields['password2'].label = "Password(again)"
 
     class Meta:
         model = User

@@ -1,8 +1,7 @@
-
-
 from django.shortcuts import render, redirect
-from django.template import RequestContext
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as django_login, authenticate, logout as django_logout
+
 
 from OpenML.accounts.forms import AuthenticationForm, RegistrationForm
 
@@ -38,7 +37,7 @@ def register(request):
         form = RegistrationForm(data=request.POST)
         if form.is_valid():
             user = form.save()
-            return redirect('/')
+            return render(request, '/home',)
     else:
         form = RegistrationForm()
         return render(request,'registration/register.html',{'form': form})
@@ -49,6 +48,11 @@ def logout(request):
     """
     django_logout(request)
     return redirect('/home')
+
+
+@login_required
+def home(request):
+    return render(request, 'index.html')
 
 
 

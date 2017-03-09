@@ -37,10 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social_django',
     'OpenML.tasks',
     'OpenML.home',
     'OpenML.datasets',
-    'OpenML.accounts'
+    'OpenML.accounts',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +53,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'middleware.LoginRequiredMiddleware.LoginRequiredMiddleware',
+    'middleware.LoginRequiredMiddleware.AdminOnlyMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'OpenML.urls'
@@ -68,6 +72,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -119,9 +125,25 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_URL = '/accounts/login/'
+LOGOUT_URL = '/accounts/logout'
+LOGIN_REDIRECT_URL = 'home'
 
 AUTH_USER_MODEL = 'accounts.User'
-AUTHENTICATION_BACKENDS = ['OpenML.accounts.backends.EmailAuthBackend','django.contrib.auth.backends.ModelBackend', ]
+
+AUTHENTICATION_BACKENDS = [
+    'OpenML.accounts.backends.EmailAuthBackend',
+    'django.contrib.auth.backends.ModelBackend', 
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.facebook.FacebookOAuth2',
+
+    ]
 LOGIN_EXEMPT_URLS=[r'^accounts/register',r'^admin.*',r'^accounts/login']
 
 
+
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+# Auto logout delay in minutes
+AUTO_LOGOUT_DELAY = 1 #equivalent to 5 minutes
+
+SESSION_COOKIE_AGE = 10*60
